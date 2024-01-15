@@ -16,7 +16,7 @@ async function main() {
   const doc = new Document({ pageContent: asyncapiDoc })
 
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 4000,
+    chunkSize: 2000,
   })
   const output = await splitter.createDocuments([asyncapiDoc])
 
@@ -26,7 +26,7 @@ async function main() {
 
   await SupabaseVectorStore.fromDocuments(
     output,
-    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY }),
+    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY, maxConcurrency: 3, maxRetries: 1, batchSize: 200 }),
     {
       client,
       tableName: 'documents',
