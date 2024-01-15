@@ -26,7 +26,7 @@ async function main() {
 
   await SupabaseVectorStore.fromDocuments(
     output,
-    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY, maxConcurrency: 3, maxRetries: 1, batchSize: 200 }),
+    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY, maxConcurrency: 3, maxRetries: 1  }),
     {
       client,
       tableName: 'documents',
