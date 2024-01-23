@@ -16,9 +16,12 @@ async function main() {
   const doc = new Document({ pageContent: asyncapiDoc })
 
   const splitter = new RecursiveCharacterTextSplitter({
-    chunkSize: 2000,
+    chunkSize: 500,
+    chunkOverlap: 50
   })
   const output = await splitter.createDocuments([asyncapiDoc])
+
+  fs.writeFileSync('./output', JSON.stringify(output), {encoding: 'utf-8'})
 
   //TODO: Create embedings and upload them to supabase
 
@@ -26,7 +29,7 @@ async function main() {
 
   await SupabaseVectorStore.fromDocuments(
     output,
-    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY, maxConcurrency: 3, maxRetries: 1  }),
+    new OpenAIEmbeddings({ openAIApiKey: OPENAI_API_KEY }),
     {
       client,
       tableName: 'documents',
